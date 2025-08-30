@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TEG - The Office</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #222;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .hotspot {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      #gamePanel {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        aspect-ratio: 4 / 3;
+        width: auto;
+        height: 100vh;
+        overflow: hidden;
+        left: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .popupIcon {
+        height: auto;
+        width: 48%;
+        border-radius: 2em;
+      }
+
+      .fullImg {
+        height: 100%;
+        width: 100%;
+        margin-bottom: 5%;
+      }
+
+      .popupText {
+        width: 50%;
+        float: right;
+        padding-bottom: 5%;
+      }
+
+      .popup {
+        display: none;
+        position: absolute;
+        top: 30%;
+        left: 32.5%;
+        padding: 5px 7px;
+        background: #ffe7e2;
+        color: black;
+        border-radius: 2.5em;
+        z-index: 100;
+        font-size: 1em;
+        width: 40%;
+      }
+
+      .galleryPopup {
+        display: none;
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        padding: 5px 7px;
+        background: #ffe7e2;
+        color: black;
+        z-index: 100;
+        font-size: 1em;
+        width: 80%;
+      }
+
+      .close-btn {
+        position: absolute;
+        padding: 5px 7px;
+        right: 5%;
+        bottom: 5%;
+        background-color: #b96958;
+        color: #fff;
+        border-radius: 2.5em;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+      }
+
+      .clueText {
+        text-align: center;
+        padding-bottom: 0;
+        color: #b96958;
+      }
+
+      .leftBtn {
+        position: absolute;
+        z-index: 300;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .rightBtn {
+        position: absolute;
+        z-index: 500;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      .mySlides {
+        display: none;
+      }
+
+      .slideshow-container {
+        max-width: 1000px;
+        position: relative;
+        margin: auto;
+      }
+
+      .prev,
+      .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: #000;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+      }
+
+      .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+      }
+
+      .prev:hover,
+      .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      /* The dots/bullets/indicators */
+      .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+      }
+
+      .active,
+      .dot:hover {
+        background-color: #717171;
+      }
+
+      /* Fading animation */
+      .fade {
+        animation-name: fade;
+        animation-duration: 1.5s;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* On smaller screens, decrease text size */
+      @media only screen and (max-width: 300px) {
+        .prev,
+        .next,
+        .text {
+          font-size: 11px;
+        }
+      }
+
+      #cards {
+        top: 14%;
+        left: 24%;
+        width: 24%;
+        height: 50%;
+      }
+      #birthday {
+        top: 19.5%;
+        left: 51%;
+        width: 7%;
+        height: 13%;
+      }
+      #grad {
+        top: 19.5%;
+        left: 60%;
+        width: 7%;
+        height: 13%;
+      }
+      #board {
+        top: 19.5%;
+        left: 68.5%;
+        width: 7%;
+        height: 13%;
+      }
+      #flag {
+        top: 35%;
+        left: 51%;
+        width: 24.5%;
+        height: 24%;
+      }
+      #pins {
+        top: 61.5%;
+        left: 51%;
+        width: 24.5%;
+        height: 24%;
+      }
+      #heist {
+        top: 67%;
+        left: 23.5%;
+        width: 7%;
+        height: 13%;
+      }
+      #crochet {
+        top: 67%;
+        left: 32.5%;
+        width: 7%;
+        height: 13%;
+      }
+      #cosmic {
+        top: 67%;
+        left: 41.5%;
+        width: 7%;
+        height: 13%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gamePanel">
+      <a class="leftBtn" href="../walls/desk.html">&lt;</a>
+      <img
+        src="../../assets/images/walls/gallery_bg.jpg"
+        alt="Desk"
+        class="desk-img"
+      />
+
+      <!-- Hotspots -->
+      <div class="hotspot" id="cards" onclick="openPopup('cardsPopup')"></div>
+      <div
+        class="hotspot"
+        id="birthday"
+        onclick="openPopup('birthdayPopup')"
+      ></div>
+      <div class="hotspot" id="grad" onclick="openPopup('gradPopup')"></div>
+      <div class="hotspot" id="board" onclick="openPopup('boardPopup')"></div>
+      <div class="hotspot" id="flag" onclick="openPopup('flagPopup')"></div>
+      <div class="hotspot" id="heist" onclick="openPopup('heistPopup')"></div>
+      <div
+        class="hotspot"
+        id="crochet"
+        onclick="openPopup('crochetPopup')"
+      ></div>
+      <div class="hotspot" id="cosmic" onclick="openPopup('cosmicPopup')"></div>
+
+      <a class="rightBtn" href="../walls/bookshelf.html">&gt;</a>
+    </div>
+
+    <!-- Popups -->
+    <div id="cardsPopup" class="galleryPopup">
+      <div class="slideshow-container">
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <div class="mySlides fade">
+          <img src="../../assets/cards/PFLF_FSD.jpg" class="fullImg" />
+        </div>
+
+        <div class="mySlides fade">
+          <img src="../../assets/cards/PFLF_AppDev.jpg" class="fullImg" />
+        </div>
+
+        <div class="mySlides fade">
+          <img src="../../assets/cards/Cassis.jpg" class="fullImg" />
+        </div>
+
+        <div class="mySlides fade">
+          <img src="../../assets/cards/HomeDepot.jpg" class="fullImg" />
+        </div>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+      </div>
+      <br />
+      <div style="text-align: center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+      </div>
+      <button class="close-btn" onclick="closeGalleryPopup()">Close</button>
+    </div>
+
+    <div id="birthdayPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/birthday.jpg"
+      ></image>
+      <div class="popupText">
+        <p class="clueText"><strong>This is a clue!</strong></p>
+        <h3>A very special day! 💛</h3>
+        <p>
+          May 28th! My birthday. Time to decorate, celebrate, and eat an entire
+          cake guilt free.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="gradPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/purdue_grad.jpg"
+      ></image>
+      <div class="popupText">
+        <p class="clueText"><strong>This is a clue!</strong></p>
+        <h3>Boiler Up, Hammer Down 💛</h3>
+        <p>
+          Graduated from Purdue, majoring in Computer Graphics Technology with a
+          double concentration in Web Development and Data Visualization.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="boardPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/skateboard.jpg"
+      ></image>
+      <div class="popupText">
+        <h3>Yin Yang 💛</h3>
+        <p>
+          Lovingly titled 'Jim didn't push Michael into the koi pond. Jim just
+          let Michael fall', I painted this board back in 2022.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="heistPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/art_heist.jpg"
+      ></image>
+      <div class="popupText">
+        <h3>Art Heist 💛</h3>
+        <p>
+          This was the only escape room that I had to pause the time for. When
+          reaching through the door to get the cane I bumped my head on the
+          latch!
+          <br />
+          <br />
+          Cris Martinez, from the Galleria, was so wonderfully kind and showed
+          exceptional care when pausing the timer, bringing me a bandage, and
+          helping me finish the room. Still made it out with over 7min to spare.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="flagPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/hongkonger.jpg"
+      ></image>
+      <div class="popupText">
+        <h3>Hong Konger for Life 💛</h3>
+        <p>
+          Born in Mainland China, adopted and moved to Memphis, TN, and moved
+          again to Hong Kong when I was 2yo, the +852 was, and is, my home. When
+          I learned Silk Road was set in HK I bought Chasing Hahn, speed ran it,
+          just to get to it. Seeing references to my home, Chinese language and
+          writing, made me so ecstatic. It's always fun to see a good homage to
+          my home.
+          <br />
+          <br />
+          I laughed when AIR said he was in HK and I was wherever I was,
+          thinking I should've been home playing this one.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="crochetPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/sweater.jpg"
+      ></image>
+      <div class="popupText">
+        <h3>My favorite sweater 💛</h3>
+        <p>
+          Three days of work to crochet this leafy sweater. I don't know how
+          many stitches it took, but I do know my hand hurt after.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="cosmicPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/gallery_pics/cosmic_crisis.jpg"
+      ></image>
+      <div class="popupText">
+        <h3>Cosmic Crisis 💛</h3>
+        <p>
+          I definitely did not spill a bottle of water on myself after picking
+          it up off the keyboard. Definitely not...
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+    <script>
+
+      function openPopup(id) {
+        // Close any open popups
+        document
+          .querySelectorAll(".popup")
+          .forEach((p) => (p.style.display = "none"));
+        // Show the chosen popup
+        document.getElementById(id).style.display = "block";
+      }
+
+      function closePopup() {
+        document
+          .querySelectorAll(".popup")
+          .forEach((p) => (p.style.display = "none"));
+      }
+
+      function closeGalleryPopup() {
+        document
+          .querySelectorAll(".galleryPopup")
+          .forEach((p) => (p.style.display = "none"));
+      }
+
+      // Optional: click outside to close
+      document.addEventListener("click", (e) => {
+        if (
+          !e.target.classList.contains("hotspot") &&
+          (!e.target.closest(".popup") || !e.target.closest(".galleryPopup"))
+        ) {
+          closePopup();
+        }
+      });
+
+      let slideIndex = 1;
+      showSlides(slideIndex);
+
+      function plusSlides(n) {
+        showSlides((slideIndex += n));
+      }
+
+      function currentSlide(n) {
+        showSlides((slideIndex = n));
+      }
+
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {
+          slideIndex = 1;
+        }
+        if (n < 1) {
+          slideIndex = slides.length;
+        }
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+      }
+    </script>
+  </body>
+</html>

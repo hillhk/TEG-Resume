@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TEG - The Office</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #222;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      #introVideoPopup {
+        display: none;
+        position: flex;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #introVideoPopup video {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 1em;
+      }
+      #gamePanel {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        aspect-ratio: 4 / 3;
+        width: auto;
+        height: 100vh;
+        overflow: hidden;
+        left: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .desk-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hotspot {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .popupIcon {
+        height: 20%;
+        width: 20%;
+      }
+
+      .fullImg {
+        height: 100%;
+        width: 100%;
+      }
+
+      .popupText {
+        width: 80%;
+        float: right;
+        padding-bottom: 5%;
+      }
+
+      .popup {
+        display: none;
+        position: absolute;
+        top: 30%;
+        left: 32.5%;
+        padding: 5px 7px;
+        background: #ffe7e2;
+        color: black;
+        border-radius: 2.5em;
+        z-index: 100;
+        font-size: 1em;
+        width: 40%;
+      }
+
+      .close-btn {
+        position: absolute;
+        padding: 5px 7px;
+        right: 5%;
+        bottom: 5%;
+        background-color: #b96958;
+        color: #fff;
+        border-radius: 2.5em;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+      }
+
+      .clueText {
+        text-align: center;
+        padding-bottom: 0;
+        color: #b96958;
+      }
+
+      #specOps {
+        top: 7%;
+        left: 6%;
+        width: 25%;
+        height: 30%;
+      }
+      #mug {
+        top: 56%;
+        left: 15%;
+        width: 12%;
+        height: 18%;
+      }
+      #logo {
+        top: 70%;
+        left: 27%;
+        width: 50%;
+        height: 12%;
+      }
+      #topher {
+        top: 55%;
+        left: 80%;
+        width: 8%;
+        height: 16%;
+      }
+      #comp {
+        top: 23%;
+        left: 31.5%;
+        width: 37%;
+        height: 37%;
+      }
+
+      .leftBtn {
+        position: absolute;
+        z-index: 300;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .rightBtn {
+        position: absolute;
+        z-index: 500;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="introVideoPopup" class="popup">
+      <video id="introVideo" width="100%" height="100%">
+        <source src="../../assets/videos/intro.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div id="gamePanel">
+      <a class="leftBtn" href="../walls/crafts.html">&lt;</a>
+      <img
+        src="../../assets/images/desk/desk_bg.jpg"
+        alt="Desk"
+        class="desk-img"
+        id="compImage"
+      />
+
+      <!-- Hotspots -->
+      <div
+        class="hotspot"
+        id="specOps"
+        onclick="openPopup('specOpsPopups')"
+      ></div>
+      <div class="hotspot" id="mug" onclick="openPopup('mugPopup')"></div>
+      <div class="hotspot" id="logo" onclick="openPopup('logoPopup')"></div>
+      <div class="hotspot" id="topher" onclick="openPopup('topherPopup')"></div>
+      <div
+        class="hotspot"
+        id="comp"
+        onclick="window.location.href='compZoom.html'"
+      ></div>
+
+      <a class="rightBtn" href="../walls/gallery.html">&gt;</a>
+    </div>
+
+    <!-- Popups -->
+    <div id="specOpsPopups" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/desk/SpecOps.png"
+      ></image>
+      <div class="popupText">
+        <h3>Special Ops has a special place in my heart 💛</h3>
+        <p>
+          Special Ops: Mystery Market was the first TEG room I did. Completed
+          with just under 8 minutes to spare, it set the stage for my TEG room
+          addiction.
+          <br />
+          <br />
+          Within 5 days I completed all 8 rooms available in Houston, 5 at the
+          Galleria addiction 3 additional ones at City Center.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="mugPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/desk/Tetris_Mug.png"
+      ></image>
+      <div class="popupText">
+        <h3>Caffeine and Tetris 💛</h3>
+        <p>
+          I probably started drinking coffee way too young, and much like
+          playing Tetris, it has become a <i>slight</i> addiction.
+          <br />
+          <br />
+          Tetris has been my favorite game for as long as I can remember, and I
+          finally broke 1.000.000 points this year! Currently sitting with a
+          1.4mil high score on the official Tetris website.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="logoPopup" class="popup">
+      <image
+        class="popupIcon"
+        src="../../assets/images/desk/Radiant_logo.png"
+      ></image>
+      <div class="popupText">
+        <h3>Radiant like the Sun 💛</h3>
+        <p>
+          Whenever I need a mock logo I always use a sun. To me the sun
+          represents brightness, radiance, and life. When I was adopted I was
+          given an English name, but I've always held my Chinese name close to
+          my heart.
+          <br />
+          <br />
+          黄灿灿 (huángcàncàn) which roughly translates to bright, sparkle, and
+          radiant! This meaning has always been my view of how to approch life,
+          a reminder to radiate positivity, and live in joy.
+        </p>
+      </div>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="topherPopup" class="popup">
+      <p class="clueText"><strong>This is a clue!</strong></p>
+      <h3 style="text-align: center; padding-bottom: 0">
+        A very special boy 💛
+      </h3>
+      <p>
+        <image
+          class="fullImg"
+          src="../../assets/images/desk/topher.png"
+        ></image>
+      </p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <div id="computerScreenPopup" class="popup"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const videoPopup = document.getElementById("introVideoPopup");
+        const video = document.getElementById("introVideo");
+
+        // Only play if not played in this session
+        if (!sessionStorage.getItem("videoPlayed")) {
+          videoPopup.style.display = "block";
+
+          // Play the video
+          video.play().catch((err) => {
+            console.log("Autoplay with sound failed, muting...");
+            video.muted = true;
+            video.play();
+          });
+
+          // Close the video after 11 seconds in case ended doesn't trigger
+          const autoClose = setTimeout(() => {
+            videoPopup.style.display = "none";
+            sessionStorage.setItem("videoPlayed", "true");
+          }, 35000); // 11 seconds
+
+          // Also listen for the ended event just in case
+          video.addEventListener("ended", () => {
+            clearTimeout(autoClose);
+            videoPopup.style.display = "none";
+            sessionStorage.setItem("videoPlayed", "true");
+          });
+        } else {
+          videoPopup.style.display = "none";
+        }
+      });
+
+      function openPopup(id) {
+        // Close any open popups
+        document
+          .querySelectorAll(".popup")
+          .forEach((p) => (p.style.display = "none"));
+        // Show the chosen popup
+        document.getElementById(id).style.display = "block";
+      }
+
+      function closePopup() {
+        document
+          .querySelectorAll(".popup")
+          .forEach((p) => (p.style.display = "none"));
+      }
+
+      // Optional: click outside to close
+      document.addEventListener("click", (e) => {
+        if (
+          !e.target.classList.contains("hotspot") &&
+          !e.target.closest(".popup")
+        ) {
+          closePopup();
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const compImage = document.getElementById("compImage");
+
+        // check saved state
+        if (localStorage.getItem("unlocked") === "true") {
+          compImage.src = "../../assets/images/desk/unlocked_desk_bg.jpg";
+        }
+      });
+    </script>
+  </body>
+</html>

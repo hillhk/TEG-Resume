@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TEG - The Office</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #222;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #gamePanel {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        aspect-ratio: 4 / 3;
+        width: auto;
+        height: 100vh;
+        overflow: hidden;
+        left: 0;
+        background: url("../../assets/images/walls/crafts_bg.jpg") no-repeat
+          center/cover;
+        display: flex;
+        justify-content: center;
+      }
+
+      .leftBtn {
+        position: absolute;
+        z-index: 300;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .rightBtn {
+        position: absolute;
+        z-index: 500;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        padding: 42.5% 2.5%;
+        font-size: 2.5em;
+        border: none;
+        background: #555;
+        opacity: 0.25;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gamePanel">
+      <a class="leftBtn" href="../walls/bookshelf.html">&lt;</a>
+      <a class="rightBtn" href="../walls/desk.html">&gt;</a>
+    </div>
+  </body>
+</html>

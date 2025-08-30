@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TEG - The Office</title>
+    <style>
+      .hint {
+        opacity: 0.9;
+        font-size: 0.95rem;
+        color: darkblue;
+        cursor: pointer;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+        font-family: Arial, sans-serif;
+      }
+
+      .close-btn {
+        position: flex;
+        padding: 5px 7px;
+        right: 5%;
+        bottom: 5%;
+        background-color: #b96958;
+        color: #fff;
+        border-radius: 2.5em;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        margin-bottom: 5%;
+      }
+
+      #gamePanel {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        aspect-ratio: 4 / 3;
+        width: auto;
+        height: 100vh;
+        overflow: hidden;
+        left: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Lock Screen */
+      #lockScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("../../assets/images/desk/Lock_Screen.png") no-repeat
+          center center;
+        background-size: cover;
+        display: none; /* hidden if unlocked */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+      #lockScreen.active {
+        display: flex;
+      }
+
+      #lockBox {
+        margin-top: 20%;
+        background: none;
+        text-align: center;
+      }
+
+      input {
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        background-color: #dbc09e;
+      }
+
+      .compLock {
+        top: 60%;
+      }
+
+      /* Desktop */
+      #desktop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("../../assets/images/desk/Unlock_Screen.jpg") no-repeat
+          center center;
+        background-size: cover;
+        display: none;
+      }
+      #desktop.active {
+        display: block;
+      }
+
+      .folder {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        border: 2px solid transparent;
+      }
+
+      #projectsFolder {
+        top: 11%;
+        left: 9.5%;
+        width: 10%;
+        height: 11%;
+      }
+
+      #securePopup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+      }
+      #popupContent {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+      }
+      #pinInput #closePopup {
+        margin-top: 10px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      .back-btn {
+        text-decoration: none;
+        padding: 2.5%;
+        margin: 2.5%;
+        bottom: 0;
+        left: 0;
+        z-index: 300;
+        position: absolute;
+        background-color: #b96958;
+        opacity: 0.6;
+        color: #fff;
+        border-radius: 1.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="desk.html" class="back-btn">Back</a>
+    <div id="gamePanel">
+      <!-- Lock Screen -->
+      <div id="lockScreen">
+        <div id="lockBox">
+          <h2>Hill's Computer</h2>
+          <input type="password" id="passwordInput" placeholder="Password" />
+          <button id="unlockBtn">Unlock</button>
+          <br />
+          <span class="hint" id="forgotPassword" onclick="togglePassword()"
+            >Forgot Password</span
+          >
+          <p id="lockMessage"></p>
+        </div>
+      </div>
+
+      <!-- Desktop -->
+      <div id="desktop">
+        <!-- Clickable folders -->
+        <div id="projectsFolder" class="folder"></div>
+      </div>
+
+      <!-- Secure Folder Popup -->
+      <div id="securePopup">
+        <div id="popupContent">
+          <h2>Secure Folder</h2>
+          <input type="password" id="pinInput" placeholder="Enter PIN" />
+          <button id="pinSubmit">Submit</button>
+          <br />
+          <br />
+          <span class="hint" id="forgotPin" onclick="togglePin()"
+            >Forgot Pin</span
+          >
+          <p id="pinMessage"></p>
+          <button id="closePopup" class="close-btn">Close</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Elements
+      const lockScreen = document.getElementById("lockScreen");
+      const desktop = document.getElementById("desktop");
+      const unlockBtn = document.getElementById("unlockBtn");
+      const passwordInput = document.getElementById("passwordInput");
+      const lockMessage = document.getElementById("lockMessage");
+
+      const projectsFolder = document.getElementById("projectsFolder");
+      const securePopup = document.getElementById("securePopup");
+      const closePopup = document.getElementById("closePopup");
+      const pinInput = document.getElementById("pinInput");
+      const pinSubmit = document.getElementById("pinSubmit");
+      const pinMessage = document.getElementById("pinMessage");
+
+      const CORRECT_PASSWORD = "topher";
+      const CORRECT_PIN = "0528";
+
+      // --- On load, check if already unlocked ---
+      window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("unlocked") === "true") {
+          unlockDesktop();
+        } else {
+          lockScreen.classList.add("active");
+        }
+      });
+
+      // --- Unlock button ---
+      unlockBtn.addEventListener("click", tryUnlock);
+      passwordInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") tryUnlock();
+      });
+
+      function tryUnlock() {
+        if (passwordInput.value.toLowerCase() === CORRECT_PASSWORD) {
+          sessionStorage.setItem("unlocked", "true");
+          unlockDesktop();
+        } else {
+          lockMessage.textContent = "Try Again!!";
+        }
+      }
+
+      function unlockDesktop() {
+        lockScreen.classList.remove("active");
+        desktop.classList.add("active");
+      }
+
+      // --- Secure Folder ---
+      projectsFolder.addEventListener("click", () => {
+        securePopup.style.display = "flex";
+        pinInput.value = "";
+        pinMessage.textContent = "";
+      });
+
+      closePopup.addEventListener("click", () => {
+        securePopup.style.display = "none";
+      });
+
+      pinSubmit.addEventListener("click", checkPIN);
+      pinInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") checkPIN();
+      });
+
+      function checkPIN() {
+        if (pinInput.value === CORRECT_PIN) {
+          window.open("https://www.theradianthill.com/projects", "_blank");
+          sessionStorage.setItem("unlockFolder", "true");
+        } else {
+          pinMessage.textContent = "Try Again!";
+        }
+      }
+
+      // --- Hints ---
+      function togglePassword() {
+        const forgot = document.getElementById("forgotPassword");
+        forgot.innerHTML =
+          forgot.innerHTML === "Forgot Password"
+            ? "Hint: A very special boy."
+            : "Forgot Password";
+      }
+
+      function togglePin() {
+        const forgot = document.getElementById("forgotPin");
+        forgot.innerHTML =
+          forgot.innerHTML === "Forgot Pin"
+            ? "Hint: I think I need to buy more yarn! But I do like how it matches my folders."
+            : "Forgot Pin";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Office</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      height: 100%;
+        width: 100%;
+        overflow: hidden;
+        background-color: #b96958;
+      }
+
+      body {
+        display: flex;
+        font-family: Arial, sans-serif;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      iframe {
+        height: 96vh;
+        width: auto;
+        aspect-ratio: 4 / 3;
+        border: none;
+        margin: 2vh;
+        border-radius: 1.5em;
+      }
+
+      #gamePanel {
+        aspect-ratio: 4 / 3;
+        height: 100vh;
+        flex-shrink: 0; /* don't let it shrink */
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gamePanel">
+      <iframe src="../html/index.html"></iframe>
+    </div>
+  </body>
+</html>
