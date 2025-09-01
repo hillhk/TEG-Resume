@@ -12,21 +12,28 @@ Tasks
 Office Sections:
 
 Desk Wall
+
 clickable elements:
   * Special Ops (poster)
   * cat photo
   * keyboard/mouse logo
   * coffee mug
   * computer
+    
 non-clickable references:
  * Art Heist (desktop background, Monet's Waterlilies0
 
     
-Gallery Wall - clickable elements:
+Gallery Wall
+
+clickable elements:
   * all photos
   * HK flag
   * business card corkboard -> resume items
 
+non-clickable elements:
+ * pinboard
+   
     
 Bookshelf Wall - clickable elements:
   * phone
@@ -39,7 +46,9 @@ Bookshelf Wall - clickable elements:
 
     
 Yarn Wall
+
 clickable elements: none
+
 non-clickable references:
  * Prison Break (chess pieces)
  * Cosmic Crisis (power cell)
