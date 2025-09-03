@@ -162,9 +162,12 @@
         height: 7%;
       }
       .key {
-        height: 2em;
-        width: 2em;
-        margin: 0.1em;
+        height: 100%;
+        width: 100%;
+        margin: 1.5%;
+        background-color: white;
+        border: none;
+        font-size: 0.8em;
       }
     </style>
   </head>
@@ -210,7 +213,7 @@
             background: #fff;
             color: #000;
             font-size: 1.5em;
-            padding: 10px;
+            padding: 7px;
             margin-bottom: 5px;
             letter-spacing: 2px;
             height: 1.8em;
@@ -221,9 +224,9 @@
           id="keypad"
           style="
             display: grid;
-            grid-template-columns: repeat(3, 60px);
+            grid-template-columns: repeat(3, 31.5%);
             grid-gap: 10px;
-            justify-content: center;
+            justify-content: left;
             margin-bottom: 15px;
           "
         >
@@ -382,6 +385,34 @@
     </div>
 
     <script>
+      document.addEventListener("keydown", (event) => {
+        const validKeys = [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "*",
+          "#",
+        ];
+
+        if (validKeys.includes(event.key)) {
+          dialedNumber += event.key;
+          phoneDisplay.textContent = dialedNumber;
+        } else if (event.key === "Backspace") {
+          dialedNumber = dialedNumber.slice(0, -1);
+          phoneDisplay.textContent = dialedNumber;
+        } else if (event.key === "Enter") {
+          // 🔑 Simulate pressing the call button
+          callBtn.click();
+        }
+      });
+
       function openPopup(id) {
         // Close any open popups
         document
@@ -440,7 +471,7 @@
 
         if (dialedNumber === "3179090503") {
           if (allTasksCompleted()) {
-            window.location.href = "../../assets/videos/endScreen.html";
+            window.location.href = "../../html/endScreen.html";
           } else {
             callScreen.innerHTML = `<p style="color:red;">The number you are trying to reach is unavailable. <br/> Please finish all tasks.</p>`;
             dialedNumber = "";
